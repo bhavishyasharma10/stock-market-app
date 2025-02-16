@@ -10,23 +10,44 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}.BSE&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
-    console.log("Fetching:", url);
+    const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}.BSE&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
     const response = await axios.get(url);
-    console.log("API Response:", response.data);
 
-    if (!response.data["Time Series (Daily)"]) {
-      return NextResponse.json({ error: "Stock data not found" }, { status: 404 });
+    if (!response.data["Global Quote"]) {
+        /** Sample stock price data as the API rate limit is 25 a day */
+        const sampleStockPrice = {
+            symbol: "ZOMATO",
+            open: 130.0,
+            high: 135.0,
+            low: 129.0,
+            price: 132.5,
+            volume: 1000000,
+            latestTradingDay: "2021-10-01",
+            previousClose: 128.0,
+            change: 4.5,
+            changePercent: "3.52%",
+        };
+
+        console.error("API Error:", response.data.Information);   
+        return NextResponse.json(sampleStockPrice);
     }
 
-    const formattedData = Object.keys(response.data["Time Series (Daily)"])
-      .slice(0, 10)
-      .map((date) => ({
-        date,
-        price: parseFloat(response.data["Time Series (Daily)"][date]["4. close"]),
-      }));
+    const stockData = response.data["Global Quote"];
 
-    return NextResponse.json(formattedData.toReversed());
+    const stockPrice = {
+      symbol: stockData["01. symbol"],
+      open: parseFloat(stockData["02. open"]),
+      high: parseFloat(stockData["03. high"]),
+      low: parseFloat(stockData["04. low"]),
+      price: parseFloat(stockData["05. price"]),
+      volume: parseInt(stockData["06. volume"]),
+      latestTradingDay: stockData["07. latest trading day"],
+      previousClose: parseFloat(stockData["08. previous close"]),
+      change: parseFloat(stockData["09. change"]),
+      changePercent: stockData["10. change percent"],
+    };
+
+    return NextResponse.json(stockPrice);
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json({ error: "Failed to fetch stock data" }, { status: 500 });
