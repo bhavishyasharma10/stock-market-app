@@ -44,7 +44,7 @@ npm install
 Create a `.env.local` file in the root directory and add your Alpha Vantage API key:
 
 ```env
-NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY=your_api_key_here
+ALPHA_VANTAGE_API_KEY=your_api_key_here
 ```
 
 ### 4. Run the Application
