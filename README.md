@@ -15,7 +15,7 @@ Using INDMoney as my stock broker app, I noticed the absence of a feature to cal
 ## Features
 
 - **Real-Time Stock Prices**: Fetches live stock prices using the Alpha Vantage API.
-- **User Holdings Management**: Allows users to input and save their current holdings, including quantity and average buy price.
+- **User Holdings Management**: Allows users to input their current holdings, including quantity and average buy price.
 - **Average Price Calculation**: Calculates the new average price dynamically when users input additional shares to purchase.
 
 ## Technologies Used
@@ -30,7 +30,7 @@ Using INDMoney as my stock broker app, I noticed the absence of a feature to cal
 
 ```bash
 git clone https://github.com/bhavishyasharma10/stock-market-app.git
-cd stock-buy-average-calculator
+cd stock-market-app
 ```
 
 ### 2. Install Dependencies
